@@ -1,0 +1,35 @@
+worker_processes  auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server {
+   	listen 80;
+   	listen [::]:80;
+   	server_name localhost;
+	
+   	proxy_set_header Host $host;
+   	proxy_set_header X-Real-IP $remote_addr;
+   	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   	proxy_set_header X-Forwarded-Host $host;
+   	proxy_set_header X-Forwarded-Server $host;
+
+  	location / {
+   		proxy_set_header Accept-Encoding "";
+   		proxy_pass http://icecast-server:8000/;
+   		sub_filter_types application/xspf+xml audio/x-mpegurl audio/x-vclt text/css text/html text/xml;
+   		sub_filter ':8000/' '/';
+   		sub_filter '@localhost' '@onlineradio.example.com';
+   		sub_filter 'localhost' $host;
+   		sub_filter 'Mount Point ' $host;
+  	}	
+    }
+ }

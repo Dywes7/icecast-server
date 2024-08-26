@@ -1,0 +1,18 @@
+services:
+  icecast-server:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    image: my-icecast
+    container_name: icecast-server
+
+  nginx-server:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - icecast-server
