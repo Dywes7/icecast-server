@@ -4,7 +4,7 @@ FROM ubuntu:latest
 # Atualização de repositórios e instalação Icecast
 RUN apt update -y && apt upgrade -y && apt install icecast2 -y
 
-# Criação de grupo e usuário icecast
+# Criação do usuário icecast e adição ao grupo icecast
 RUN useradd -r -g icecast icecast
 
 # Copia do arquivo icecast.xml (SO pai) para dentro container

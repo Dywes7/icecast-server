@@ -1,18 +1,18 @@
-services:
-  icecast-server:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
-    image: my-icecast
-    container_name: icecast-server
+services:                           # Definição dos serviços (containers)
+  icecast-server:                   # Nome do serviço para o icecast
+    build:                          # Indicação de construção de imagem (Dockerfile)
+      context: .                    # Indicação do contexto de construção para o diretório atual
+    ports:                          # Definição de portas a serem escutadas pelo container
+      - "8000:8000"                 # Encaminhamento de porta 8000 (SO hospedeiro) para porta 8000 do container
+    image: my-icecast               # Nome para a imagem Docker que será construída
+    container_name: icecast-server  # Nome para o container
 
-  nginx-server:
-    image: nginx:alpine
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - icecast-server
+  nginx-server:                     # Nome para o serviço do Nginx
+    image: nginx:alpine             # Imagem Docker hub a ser utilizada no container
+    container_name: nginx-proxy     # Nome para o container
+    ports:                          # Definição de portas a serem escutadas pelo container
+      - "80:80"                     # Encaminhamento de porta 80 (SO hospedeiro) para porta 80 do container
+    volumes:                        # Indicação de ontagem de volumes dentro do container
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Mapeia o arquivo ./nginx.conf para o diretório /etc/nginx do container
+    depends_on:                     # Definição de dependência entre serviços
+      - icecast-server              # Este serviço só será iniciado após o serviço icecast-server estar rodando
