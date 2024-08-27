@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker rmi my-icecast
+
+id=$(docker images | grep 'nginx' | grep 'alpine' | awk '{print $3}')
+
+docker rmi $id
